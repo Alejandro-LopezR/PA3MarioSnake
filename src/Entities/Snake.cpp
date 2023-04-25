@@ -62,8 +62,10 @@ void Snake::draw() {
     for (int i = 0; i < body.size(); i++) {
         int curX = this->body[i][0];
         int curY = this->body[i][1];
-        ofSetColor(ofColor::white);
+        ofSetColor(ofColor::yellow); // changed color of body to yellow
         ofDrawRectangle(curX * segmentSize, curY * segmentSize, segmentSize, segmentSize);
+        ofSetColor(ofColor::green); // changed color of head to green
+        ofDrawRectangle(this->body[0][0] * segmentSize, this->body[0][1] * segmentSize, segmentSize, segmentSize); // replaced the curX and curY for positions of first square which is the head
     }
 }
 
