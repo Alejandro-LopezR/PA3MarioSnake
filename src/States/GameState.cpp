@@ -24,6 +24,7 @@ void GameState::reset() {
 void GameState::update() {
 
     if(snake->isCrashed()) {
+        score = 0; // resets score to 0 when player loses
         this->setNextState("MenuState");
         this->setFinished(true);
         return;
@@ -32,6 +33,7 @@ void GameState::update() {
     if(snake->getHead()[0] == currentFoodX && snake->getHead()[1] == currentFoodY) {
         snake->grow();
         foodSpawned = false;
+        score += 10;
     }
 
     foodSpawner();
@@ -45,6 +47,8 @@ void GameState::draw() {
     drawBoardGrid();
     snake->draw();
     drawFood();
+    ofSetColor(ofColor::white); // sets color of string to white
+    ofDrawBitmapString("Score:"  + to_string(score), ofGetWindowWidth()/2 - 50, 10); // draws score in game
 }
 //--------------------------------------------------------------
 void GameState::keyPressed(int key) {

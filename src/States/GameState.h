@@ -24,6 +24,7 @@ class GameState : public State {
 
         int currentFoodX;
         int currentFoodY;
+        int score = 0; // used for score display and lose state
 
         int boardSizeWidth, boardSizeHeight;
         int cellSize; // Pixels
