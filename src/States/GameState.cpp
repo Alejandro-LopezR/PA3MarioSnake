@@ -53,7 +53,7 @@ void GameState::draw() {
 //--------------------------------------------------------------
 void GameState::keyPressed(int key) {
 
-    if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN) { return; }
+    if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN && key != 'a') { return; } // added keys that are used like 'a' and 'u' to follow base code format
 
     switch(key) {
         case OF_KEY_LEFT:
@@ -67,6 +67,9 @@ void GameState::keyPressed(int key) {
             break;
         case OF_KEY_DOWN:
             snake->changeDirection(DOWN);
+            break;
+        case 'a': // debug key 'a'
+            score += 10; // adds 10 points to score
             break;
     }
 }
