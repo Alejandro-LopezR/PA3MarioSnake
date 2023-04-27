@@ -8,6 +8,9 @@ void ofApp::setup(){
     gameState = new GameState();
     menuState = new MenuState();
     currentState = menuState;
+    music.load("Guatauba.wav");
+    music.play();
+    music.setLoop(true);
 
 }
 

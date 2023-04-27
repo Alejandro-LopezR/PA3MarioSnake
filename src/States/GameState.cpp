@@ -4,8 +4,8 @@
 GameState::GameState() {
     foodSpawned = false;
     cellSize = 25;
-    boardSizeWidth = 64;
-    boardSizeHeight = 36;
+    boardSizeWidth = ofGetWidth() / 25;
+    boardSizeHeight = ofGetWidth() / 25;
     snake = new Snake(cellSize, boardSizeWidth, boardSizeHeight);
 }
 //--------------------------------------------------------------
@@ -53,7 +53,7 @@ void GameState::draw() {
 //--------------------------------------------------------------
 void GameState::keyPressed(int key) {
 
-    if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN && key != 'a') { return; } // added keys that are used like 'a' and 'u' to follow base code format
+    //if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN && key != 'a') { return; } // added keys that are used like 'a' and 'u' to follow base code format
 
     switch(key) {
         case OF_KEY_LEFT:
@@ -70,6 +70,9 @@ void GameState::keyPressed(int key) {
             break;
         case 'a': // debug key 'a'
             score += 10; // adds 10 points to score
+            break;
+        case 'u':
+            snake->undo();
             break;
     }
 }

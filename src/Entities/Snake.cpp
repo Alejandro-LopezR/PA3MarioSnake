@@ -98,3 +98,9 @@ void Snake::grow() {
     vector<int> newSegment = this->getTail();
     this->body.push_back(newSegment);
 }
+
+void Snake::undo(){
+    if(this->body.size() > 2){
+        this->body.pop_back();
+    }
+}

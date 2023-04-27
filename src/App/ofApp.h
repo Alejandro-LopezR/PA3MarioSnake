@@ -8,6 +8,7 @@
 class ofApp : public ofBaseApp{
 
 	public:
+		ofSoundPlayer music;
 		void setup();
 		void update();
 		void draw();
