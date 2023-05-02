@@ -4,6 +4,7 @@
 #include "State.h"
 #include "GameState.h"
 #include "MenuState.h"
+#include "PauseState.h"
 
 class ofApp : public ofBaseApp{
 
@@ -17,7 +18,7 @@ class ofApp : public ofBaseApp{
 		// void keyReleased(int key);
 		// void mouseMoved(int x, int y );
 		// void mouseDragged(int x, int y, int button);
-		// void mousePressed(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
 		// void mouseReleased(int x, int y, int button);
 		// void mouseEntered(int x, int y);
 		// void mouseExited(int x, int y);
@@ -28,5 +29,6 @@ class ofApp : public ofBaseApp{
 		State* currentState;
 		GameState* gameState;
 		MenuState* menuState;
+		PauseState* pauseState;
 		
 };

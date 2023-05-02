@@ -10,21 +10,24 @@ GameState::GameState() {
 }
 //--------------------------------------------------------------
 GameState::~GameState() {
-    delete snake;
+    if(getIsPaused()){delete snake;}
 }
 //--------------------------------------------------------------
 void GameState::reset() {
-    delete snake;
-    snake = new Snake(cellSize, boardSizeWidth, boardSizeHeight);
-    foodSpawned = false;
+    if(getIsPaused()){
+        delete snake;
+        snake = new Snake(cellSize, boardSizeWidth, boardSizeHeight);
+        foodSpawned = false;
+    }
     setFinished(false);
     setNextState("");
 }
 //--------------------------------------------------------------
 void GameState::update() {
-
+    
     if(snake->isCrashed()) {
         score = 0; // resets score to 0 when player loses
+        setIsPaused(true);
         this->setNextState("MenuState");
         this->setFinished(true);
         return;
@@ -53,7 +56,7 @@ void GameState::draw() {
 //--------------------------------------------------------------
 void GameState::keyPressed(int key) {
 
-    //if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN && key != 'a') { return; } // added keys that are used like 'a' and 'u' to follow base code format
+    //if(key != OF_KEY_LEFT && key != OF_KEY_RIGHT && key != OF_KEY_UP && key != OF_KEY_DOWN && key != 'a') { return; } 
 
     switch(key) {
         case OF_KEY_LEFT:
@@ -74,8 +77,14 @@ void GameState::keyPressed(int key) {
         case 'u':
             snake->undo();
             break;
+        case 'p':
+            setFinished(true);
+            setNextState("PauseState");
+            break;
     }
 }
+//--------------------------------------------------------------
+void GameState::mousePressed(int x, int y, int button){}
 //--------------------------------------------------------------
 void GameState::foodSpawner() {
     if(!foodSpawned) {

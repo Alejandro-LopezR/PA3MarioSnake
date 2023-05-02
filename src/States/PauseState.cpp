@@ -1,37 +1,36 @@
-#include "MenuState.h"
+#include "PauseState.h"
 
 //--------------------------------------------------------------
-MenuState::MenuState() {
-
-}   
+PauseState::PauseState(){}
 //--------------------------------------------------------------
-MenuState::~MenuState() {
-
-}
+PauseState::~PauseState(){}
 //--------------------------------------------------------------
-void MenuState::reset() {
+void PauseState::reset(){
     setFinished(false);
     setNextState("");
     return;
 }
 //--------------------------------------------------------------
-void MenuState::update() {}
+void PauseState::update(){}
 //--------------------------------------------------------------
-void MenuState::draw() {
+void PauseState::draw(){
     ofSetColor(ofColor::black);
     ofDrawRectangle(0,0,ofGetWidth(),ofGetHeight());
+    string text = "Press here to continue.";
+    ofSetColor(ofColor::red);
+    ofDrawRectangle(ofGetWidth()/2-8*text.length()/2, ofGetHeight()/2-9, 8*text.length(), -15);
     ofSetColor(ofColor::white);
-    string text = "Press any arrow key to start.";
     ofDrawBitmapString(text, ofGetWidth()/2-8*text.length()/2, ofGetHeight()/2-11);
     return;
 }
 //--------------------------------------------------------------
-void MenuState::keyPressed(int key) {
-    if(key == OF_KEY_LEFT || key == OF_KEY_RIGHT || key == OF_KEY_UP || key == OF_KEY_DOWN) {
+void PauseState::keyPressed(int key){}
+//--------------------------------------------------------------
+void PauseState::mousePressed(int x, int y, int button){
+    string text = "Press here to continue.";
+    if(x >= ofGetWidth()/2-8*text.length()/2 && x <= ofGetWidth()/2+8*text.length()/2 && y >= ofGetHeight()/2-24 && y <= ofGetHeight()/2 && button == 0){
         setFinished(true);
         setNextState("GameState");
         return;
     }
 }
-//--------------------------------------------------------------
-void MenuState::mousePressed(int x, int y, int button){}

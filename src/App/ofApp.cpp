@@ -7,6 +7,7 @@ void ofApp::setup(){
 
     gameState = new GameState();
     menuState = new MenuState();
+    pauseState = new PauseState();
     currentState = menuState;
     music.load("Guatauba.wav");
     music.play();
@@ -23,6 +24,9 @@ void ofApp::update(){
         } else if(currentState->getNextState() == "MenuState") {
             menuState->reset();
             currentState = menuState;
+        } else if(currentState->getNextState() == "PauseState"){
+            pauseState->reset();
+            currentState = pauseState;
         }
     }
     currentState->update();
@@ -38,3 +42,6 @@ void ofApp::keyPressed(int key){
     currentState->keyPressed(key);
 }
 //--------------------------------------------------------------
+void ofApp::mousePressed(int x, int y, int button){
+    currentState->mousePressed(x, y, button);
+}
