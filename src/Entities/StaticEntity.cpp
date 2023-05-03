@@ -1,3 +1,7 @@
 #include "StaticEntity.h"
 
-void StaticEntity::drawObstacle(){}
+StaticEntity::~StaticEntity() {}
+
+void StaticEntity::drawEntity(){
+    image.draw(obstacleX, obstacleY, obstacleW, obstacleH);
+}

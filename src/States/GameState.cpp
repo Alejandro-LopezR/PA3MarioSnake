@@ -7,17 +7,23 @@ GameState::GameState() {
     boardSizeWidth = 64;
     boardSizeHeight = 36;
     snake = new Snake(cellSize, boardSizeWidth, boardSizeHeight);
+    loadObstacles();
 }
 //--------------------------------------------------------------
 GameState::~GameState() {
-    if(getIsPaused()){delete snake;}
+    if(getIsPaused()){\
+    delete snake;
+    delete entity;
+    }
 }
 //--------------------------------------------------------------
 void GameState::reset() {
     if(getIsPaused()){
         delete snake;
+        delete entity;
         snake = new Snake(cellSize, boardSizeWidth, boardSizeHeight);
         foodSpawned = false;
+        obstaclesSpawned = false;
     }
     setFinished(false);
     setNextState("");
@@ -39,8 +45,18 @@ void GameState::update() {
         score += 10;
     }
 
+    for(auto entity: obstacles){
+        if(snake->getHead()[0] == entity.getObstacleX()/25 && snake->getHead()[1] == entity.getObstacleY()/25){
+            score = 0;
+            this->setFinished(true);
+            this->setNextState("LoseState");
+            return;
+        }
+    }
+
+    obstacleSpawner();
     foodSpawner();
-    if(ofGetFrameNum() % 10 == 0) {
+    if(ofGetFrameNum() % 8 == 0) {
         snake->update();
     }
 
@@ -50,6 +66,7 @@ void GameState::draw() {
     drawBoardGrid();
     snake->draw();
     drawFood();
+    drawObstacles();
     ofSetColor(ofColor::white); // sets color of string to white
     ofDrawBitmapString("Score:"  + to_string(score), ofGetWindowWidth()/2 - 50, 10); // draws score in game
 }
@@ -103,10 +120,55 @@ void GameState::foodSpawner() {
     }
 }
 //--------------------------------------------------------------
+void GameState::loadObstacles() {
+    ofImage image;
+    image.load("Mario.png");
+    characters.push_back(image);
+    image.load("Daisy.png");
+    characters.push_back(image);
+    image.load("Luma.png");
+    characters.push_back(image);
+    image.load("Luigi.png");
+    characters.push_back(image);
+    image.load("DonkeyKong.png");
+    characters.push_back(image);
+    image.load("Toadette.png");
+    characters.push_back(image);
+    image.load("Peach.png");
+    characters.push_back(image);
+    image.load("Rosalina.png");
+    characters.push_back(image);
+    image.load("Toad.png");
+    characters.push_back(image);
+    image.load("Yoshi.png");
+    characters.push_back(image);
+}
+//--------------------------------------------------------------
+void GameState::obstacleSpawner(){
+    if(!obstaclesSpawned){
+        for(int i = 0; i < 10; i++){
+            currentEntityX = ofRandom(1, boardSizeWidth - 10);
+            currentEntityY = ofRandom(1, boardSizeHeight - 10);
+            StaticEntity entity(currentEntityX*cellSize, currentEntityY*cellSize, cellSize, cellSize, characters[ofRandom(10)]);
+            obstacles.push_back(entity);
+            obstaclesSpawned = true;
+        }
+    }
+}
+//--------------------------------------------------------------
 void GameState::drawFood() {
     ofSetColor(ofColor::red);
     if(foodSpawned) {
         ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
+    }
+}
+//--------------------------------------------------------------
+void GameState::drawObstacles(){
+    ofSetColor(255,255,255);
+    if(obstaclesSpawned){
+        for(auto& obstacle : obstacles){
+            obstacle.drawEntity();
+        }
     }
 }
 //--------------------------------------------------------------
