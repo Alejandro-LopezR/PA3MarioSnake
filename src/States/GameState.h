@@ -31,6 +31,11 @@ class GameState : public State {
         bool foodSpawned = false;
         bool obstaclesSpawned = false;
 
+        float foodAge;
+        int foodDecay;
+
+        ofColor foodColor;
+
         int currentFoodX;
         int currentFoodY;
 

@@ -117,6 +117,20 @@ void GameState::foodSpawner() {
             }
         } while(isInSnakeBody);
         foodSpawned = true;
+        foodAge = ofGetElapsedTimef();
+        foodDecay = 30;
+    }
+    else{
+        int currentTime = ofGetElapsedTimef();
+        if(currentTime - foodAge >= foodDecay){
+            foodSpawned = false;
+            foodSpawner();
+        }
+        else{
+            float decayLevel = (currentTime - foodAge) / foodDecay;
+            foodColor = ofColor(255 * (1 - decayLevel), 255 * (1 - decayLevel) * 0.5, 0);
+
+        }
     }
 }
 //--------------------------------------------------------------
@@ -157,7 +171,7 @@ void GameState::obstacleSpawner(){
 }
 //--------------------------------------------------------------
 void GameState::drawFood() {
-    ofSetColor(ofColor::red);
+    ofSetColor(foodColor);
     if(foodSpawned) {
         ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
     }
