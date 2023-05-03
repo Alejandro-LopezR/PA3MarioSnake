@@ -7,9 +7,10 @@ void ofApp::setup(){
 
     gameState = new GameState();
     menuState = new MenuState();
+    loseState = new LoseState();
     pauseState = new PauseState();
     currentState = menuState;
-    music.load("Guatauba.wav");
+    music.load("GustyGarden.wav");
     music.play();
     music.setLoop(true);
 
@@ -27,6 +28,9 @@ void ofApp::update(){
         } else if(currentState->getNextState() == "PauseState"){
             pauseState->reset();
             currentState = pauseState;
+        }else if(currentState->getNextState() == "LoseState"){
+            loseState->reset();
+            currentState = loseState;
         }
     }
     currentState->update();

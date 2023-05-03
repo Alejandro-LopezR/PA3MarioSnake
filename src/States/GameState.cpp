@@ -28,7 +28,7 @@ void GameState::update() {
     if(snake->isCrashed()) {
         score = 0; // resets score to 0 when player loses
         setIsPaused(true);
-        this->setNextState("MenuState");
+        this->setNextState("LoseState");
         this->setFinished(true);
         return;
     }
