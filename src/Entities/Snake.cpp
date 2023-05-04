@@ -40,9 +40,17 @@ void Snake::update() {
     }
 
     if(oldHead[0] == -1 || oldHead[0] == boardSizeWidth || oldHead[1] == -1 || oldHead[1] == boardSizeHeight) {
-        crashed = true;
-        return;
+        if(!isGod){
+            crashed = true;
+            hitBorder = false;
+            return;
+        } else{
+            crashed = false;
+            hitBorder = true;
+            return;
+        }
     }
+
 
     int prevX = oldHead[0];
     int prevY = oldHead[1];
@@ -55,7 +63,7 @@ void Snake::update() {
         prevY = currY;
     }
 
-    checkSelfCrash();
+    if(!isGod){checkSelfCrash();}
 }
 
 void Snake::draw() {
@@ -97,6 +105,10 @@ void Snake::checkSelfCrash() {
 void Snake::grow() {
     vector<int> newSegment = this->getTail();
     this->body.push_back(newSegment);
+}
+
+bool Snake::godMode(bool change) {
+    return isGod = change;
 }
 
 void Snake::undo(){

@@ -30,9 +30,16 @@ class GameState : public State {
         
         bool foodSpawned = false;
         bool obstaclesSpawned = false;
+        bool speedBoostAte = false;
+        bool betterAppleAte = false;
+        bool godModeAte = false;
+        bool usePower = false;
+        bool isGod = false;
 
         float foodAge;
         int foodDecay;
+        int powerAge;
+
 
         ofColor foodColor;
 

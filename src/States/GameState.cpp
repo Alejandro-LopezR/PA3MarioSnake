@@ -31,7 +31,7 @@ void GameState::reset() {
 //--------------------------------------------------------------
 void GameState::update() {
     
-    if(snake->isCrashed()) {
+    if(snake->isCrashed() && !isGod) {
         score = 0; // resets score to 0 when player loses
         setIsPaused(true);
         this->setNextState("LoseState");
@@ -40,13 +40,22 @@ void GameState::update() {
     }
 
     if(snake->getHead()[0] == currentFoodX && snake->getHead()[1] == currentFoodY) {
-        snake->grow();
         foodSpawned = false;
         score += 10;
+        if(score != 110){snake->grow();}
+        if(score == 60){speedBoostAte = true;}
+        if(score == 110){
+            betterAppleAte = true;
+            speedBoostAte = false;
+        }
+        if(score == 160){
+            godModeAte = true;
+            betterAppleAte = false;
+        }
     }
 
     for(auto entity: obstacles){
-        if(snake->getHead()[0] == entity.getObstacleX()/25 && snake->getHead()[1] == entity.getObstacleY()/25){
+        if(!isGod && snake->getHead()[0] == entity.getObstacleX()/25 && snake->getHead()[1] == entity.getObstacleY()/25){
             score = 0;
             this->setFinished(true);
             this->setNextState("LoseState");
@@ -56,8 +65,44 @@ void GameState::update() {
 
     obstacleSpawner();
     foodSpawner();
-    if(ofGetFrameNum() % 8 == 0) {
-        snake->update();
+    if(!snake->getHitBorder()){
+        if(ofGetFrameNum() % 6 == 0) {
+            snake->update();
+        }
+    }
+
+    if(speedBoostAte){
+        if(usePower){
+            if(ofGetFrameNum() % 3 == 0 ){
+                snake->update();
+            }
+            if (ofGetElapsedTimef() - powerAge >= 15){
+                speedBoostAte = false;
+                usePower = false;
+            }
+        }
+    }
+
+    if(betterAppleAte){
+        if(usePower){
+            snake->grow();
+            snake->grow();
+            betterAppleAte = false;
+            usePower = false;
+        }
+    }
+
+    if(godModeAte){
+        if(usePower){
+            snake->godMode(true);
+            isGod = true;
+            if(ofGetElapsedTimef() - powerAge >= 10){
+                snake->godMode(false);
+                isGod = false;
+                godModeAte = false;
+                usePower = false;
+            }
+        }
     }
 
 }
@@ -69,6 +114,9 @@ void GameState::draw() {
     drawObstacles();
     ofSetColor(ofColor::white); // sets color of string to white
     ofDrawBitmapString("Score:"  + to_string(score), ofGetWindowWidth()/2 - 50, 10); // draws score in game
+    if(speedBoostAte){ofDrawBitmapString("Press 'b' to go faster!", ofGetWindowWidth()/2 - 50, 20);}
+    if(betterAppleAte){ofDrawBitmapString("Press 'b' to grow TWICE as long!", ofGetWindowWidth()/2 - 50, 20);}
+    if(godModeAte){ofDrawBitmapString("Press 'b' to get ANGRY!", ofGetWindowWidth()/2 - 50, 20);}
 }
 //--------------------------------------------------------------
 void GameState::keyPressed(int key) {
@@ -97,6 +145,9 @@ void GameState::keyPressed(int key) {
         case 'p':
             setFinished(true);
             setNextState("PauseState");
+            break;
+        case 'b':
+            if(speedBoostAte || betterAppleAte || godModeAte){usePower = true;}
             break;
     }
 }
@@ -171,8 +222,19 @@ void GameState::obstacleSpawner(){
 }
 //--------------------------------------------------------------
 void GameState::drawFood() {
-    ofSetColor(foodColor);
-    if(foodSpawned) {
+    if(foodSpawned && score != 50 && score != 100 && score != 150) {
+        ofSetColor(foodColor);
+        ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
+    } else if(foodSpawned && score == 50){ //speed boost
+        powerAge = ofGetElapsedTimef();
+        ofSetColor(ofColor::white);
+        ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
+    } else if(foodSpawned && score == 100){ //better apple
+        ofSetColor(ofColor::orange);
+        ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
+    } else if(foodSpawned && score == 150){ //god mode
+        powerAge =  ofGetElapsedTimef();
+        ofSetColor(ofColor::yellow);
         ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
     }
 }

@@ -17,6 +17,8 @@ private:
     int boardSizeWidth, boardSizeHeight;
     int segmentSize;
     bool crashed;
+    bool isGod = false;
+    bool hitBorder = false;
 
 public:
     Snake(int segmentSize, int boardSizeW, int boardSizeH);
@@ -26,11 +28,13 @@ public:
     void draw();
     void changeDirection(Direction d);
     void checkSelfCrash();
+    bool godMode(bool change);
     void grow();
     void undo();
     bool isCrashed() {
         return this->crashed;
     }
+    bool getHitBorder() {return this->hitBorder;}
     std::vector<int> getHead() {
         return this->body[0];
     }
@@ -41,3 +45,4 @@ public:
         return this->body;
     }
 };
+
