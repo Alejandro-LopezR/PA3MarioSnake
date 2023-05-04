@@ -11,7 +11,7 @@ GameState::GameState() {
 }
 //--------------------------------------------------------------
 GameState::~GameState() {
-    if(getIsPaused()){\
+    if(getIsPaused()){
     delete snake;
     delete entity;
     }
@@ -42,10 +42,10 @@ void GameState::update() {
     if(snake->getHead()[0] == currentFoodX && snake->getHead()[1] == currentFoodY) {
         foodSpawned = false;
         score += 10;
-        if(score != 110){snake->grow();}
+        if(score != 110){snake->grow();} //different ifs with different scores set up which power up should exist
         if(score == 60){speedBoostAte = true;}
         if(score == 110){
-            betterAppleAte = true;
+            betterAppleAte = true; // these bool variables make it so only one power up is active at a time
             speedBoostAte = false;
         }
         if(score == 160){
@@ -54,7 +54,7 @@ void GameState::update() {
         }
     }
 
-    for(auto entity: obstacles){
+    for(auto entity: obstacles){ // generates obstacles where there is no snake
         if(!isGod && snake->getHead()[0] == entity.getObstacleX()/25 && snake->getHead()[1] == entity.getObstacleY()/25){
             score = 0;
             this->setFinished(true);
@@ -63,22 +63,22 @@ void GameState::update() {
         }
     }
 
-    obstacleSpawner();
+    obstacleSpawner(); // checks if an obstacle should be drawn
     foodSpawner();
-    if(!snake->getHitBorder()){
+    if(!snake->getHitBorder()){ // if snake hits border in godMode makes it so it does not move
         if(ofGetFrameNum() % 6 == 0) {
             snake->update();
         }
     }
 
-    if(speedBoostAte){
-        if(usePower){
-            if(ofGetFrameNum() % 3 == 0 ){
+    if(speedBoostAte){// super speed power up
+        if(usePower){// makes it so it only happens when b is pressed
+            if(ofGetFrameNum() % 3 == 0 ){ // makes snake move faster
                 snake->update();
             }
-            if (ofGetElapsedTimef() - powerAge >= 15){
+            if (ofGetElapsedTimef() - powerAge >= 15){ // power up ends after determined time
                 speedBoostAte = false;
-                usePower = false;
+                usePower = false;// resets function
             }
         }
     }
@@ -95,8 +95,8 @@ void GameState::update() {
     if(godModeAte){
         if(usePower){
             snake->godMode(true);
-            isGod = true;
-            if(ofGetElapsedTimef() - powerAge >= 10){
+            isGod = true; // makes it so checkers don't work when godMode is active
+            if(ofGetElapsedTimef() - powerAge >= 10){ // power up ends after determined time
                 snake->godMode(false);
                 isGod = false;
                 godModeAte = false;
@@ -111,10 +111,10 @@ void GameState::draw() {
     drawBoardGrid();
     snake->draw();
     drawFood();
-    drawObstacles();
+    drawObstacles(); // draws the obstacles
     ofSetColor(ofColor::white); // sets color of string to white
     ofDrawBitmapString("Score:"  + to_string(score), ofGetWindowWidth()/2 - 50, 10); // draws score in game
-    if(speedBoostAte){ofDrawBitmapString("Press 'b' to go faster!", ofGetWindowWidth()/2 - 50, 20);}
+    if(speedBoostAte){ofDrawBitmapString("Press 'b' to go faster!", ofGetWindowWidth()/2 - 50, 20);} //tells you which power up is available
     if(betterAppleAte){ofDrawBitmapString("Press 'b' to grow TWICE as long!", ofGetWindowWidth()/2 - 50, 20);}
     if(godModeAte){ofDrawBitmapString("Press 'b' to get ANGRY!", ofGetWindowWidth()/2 - 50, 20);}
 }
@@ -142,11 +142,11 @@ void GameState::keyPressed(int key) {
         case 'u':
             snake->undo();
             break;
-        case 'p':
+        case 'p': // activates pause state
             setFinished(true);
             setNextState("PauseState");
             break;
-        case 'b':
+        case 'b': // activates current power up
             if(speedBoostAte || betterAppleAte || godModeAte){usePower = true;}
             break;
     }
@@ -171,7 +171,7 @@ void GameState::foodSpawner() {
         foodAge = ofGetElapsedTimef();
         foodDecay = 30;
     }
-    else{
+    else{ // makes food turn brown
         int currentTime = ofGetElapsedTimef();
         if(currentTime - foodAge >= foodDecay){
             foodSpawned = false;
@@ -186,7 +186,7 @@ void GameState::foodSpawner() {
 }
 //--------------------------------------------------------------
 void GameState::loadObstacles() {
-    ofImage image;
+    ofImage image; //loads images used in obstacle
     image.load("Mario.png");
     characters.push_back(image);
     image.load("Daisy.png");
@@ -209,7 +209,7 @@ void GameState::loadObstacles() {
     characters.push_back(image);
 }
 //--------------------------------------------------------------
-void GameState::obstacleSpawner(){
+void GameState::obstacleSpawner(){ //uses same logic as food spawner but for obstacles
     if(!obstaclesSpawned){
         for(int i = 0; i < 10; i++){
             currentEntityX = ofRandom(1, boardSizeWidth - 10);
@@ -226,7 +226,7 @@ void GameState::drawFood() {
         ofSetColor(foodColor);
         ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
     } else if(foodSpawned && score == 50){ //speed boost
-        powerAge = ofGetElapsedTimef();
+        powerAge = ofGetElapsedTimef(); // used for power up duration
         ofSetColor(ofColor::white);
         ofDrawRectangle(currentFoodX*cellSize, currentFoodY*cellSize, cellSize, cellSize);
     } else if(foodSpawned && score == 100){ //better apple
@@ -239,7 +239,7 @@ void GameState::drawFood() {
     }
 }
 //--------------------------------------------------------------
-void GameState::drawObstacles(){
+void GameState::drawObstacles(){// actually draws the obstacle using draw method from static entity
     ofSetColor(255,255,255);
     if(obstaclesSpawned){
         for(auto& obstacle : obstacles){

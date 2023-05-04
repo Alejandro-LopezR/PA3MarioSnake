@@ -3,7 +3,7 @@
 #include "State.h"
 #include "ofMain.H"
 
-class PauseState: public State {
+class PauseState: public State { // creates what you see when pause state is activated
     public:
         PauseState();
         ~PauseState();

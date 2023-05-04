@@ -19,6 +19,7 @@ private:
     bool crashed;
     bool isGod = false;
     bool hitBorder = false;
+    int tint = 5.0E-12;
 
 public:
     Snake(int segmentSize, int boardSizeW, int boardSizeH);
@@ -30,7 +31,7 @@ public:
     void checkSelfCrash();
     bool godMode(bool change);
     void grow();
-    void undo();
+    void undo(); // undo method
     bool isCrashed() {
         return this->crashed;
     }

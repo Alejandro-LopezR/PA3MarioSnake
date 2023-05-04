@@ -24,9 +24,9 @@ class GameState : public State {
         void drawBoardGrid();
 
         Snake* snake;
-        StaticEntity* entity;
-        std::vector<ofImage> characters;
-        std::vector<StaticEntity> obstacles;
+        StaticEntity* entity; // usedn for static entity
+        std::vector<ofImage> characters; // used to get different images for obstacles
+        std::vector<StaticEntity> obstacles; // creates the obstacles
         
         bool foodSpawned = false;
         bool obstaclesSpawned = false;

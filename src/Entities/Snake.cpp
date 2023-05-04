@@ -66,59 +66,112 @@ void Snake::update() {
     if(!isGod){checkSelfCrash();}
 }
 
-void Snake::draw() {
-    for (int i = 0; i < body.size(); i++) {
-        int curX = this->body[i][0];
-        int curY = this->body[i][1];
-        ofSetColor(255, 230, 0); // changed color of body to yellow
-        ofDrawCircle((curX * 25) + 13, (curY * 25) + 13, 12);
-        ofSetColor(77, 47, 7); //inner circle
-        ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 8);
-        ofSetColor(215, 122, 0); // outer circle
-        ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 5);
-        ofSetColor(255, 230, 0); // changed color of head to yellow
-        ofDrawCircle((this->body[0][0] * 25) + 13, (this->body[0][1] * 25) + 13, 12); // head
-        if (i == 0) { // draw nose on the head
-            ofSetColor(48, 29, 4);
-            int noseX, noseY, cheekX1, cheekY1, cheekX2, cheekY2;
-            int cheekSize = 8;
-            switch(this->direction) {
-                case LEFT: {
-                    noseX = (curX * 25) + 29;
-                    noseY = (curY * 25) + 13;
-                    break;
+void Snake::draw() { //changed snake to wiggler from Mario
+    if(!isGod){
+        for (int i = 0; i < body.size(); i++) {
+            int curX = this->body[i][0];
+            int curY = this->body[i][1];
+            ofSetColor(255, 230, 0); // changed color of body to yellow
+            ofDrawCircle((curX * 25) + 13, (curY * 25) + 13, 12);
+            ofSetColor(77, 47, 7); //inner circle
+            ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 8);
+            ofSetColor(215, 122, 0); // outer circle
+            ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 5);
+            ofSetColor(255, 230, 0); // changed color of head to yellow
+            ofDrawCircle((this->body[0][0] * 25) + 13, (this->body[0][1] * 25) + 13, 12); // head
+            if (i == 0) { // draw nose on the head
+                ofSetColor(48, 29, 4);
+                int noseX, noseY, cheekX1, cheekY1, cheekX2, cheekY2;
+                int cheekSize = 8;
+                switch(this->direction) {
+                    case LEFT: {
+                        noseX = (curX * 25) + 29;
+                        noseY = (curY * 25) + 13;
+                        break;
+                    }
+                    case DOWN: {
+                        noseX = (curX * 25) + 13;
+                        noseY = (curY * 25) + 29;
+                        cheekX1 = noseX - 7;
+                        cheekY1 = (curY * 25) + 18;
+                        cheekX2 = noseX + 7;
+                        cheekY2 = (curY * 25) + 18;
+                        break;
+                    }
+                    case RIGHT: {
+                        noseX = (curX * 25) - 7;
+                        noseY = (curY * 25) + 13;  
+                        break;
+                    }
+                    case UP: {
+                        noseX = (curX * 25) + 13;
+                        noseY = (curY * 25) - 7;  
+                        cheekX1 = (curX * 25) + 20;
+                        cheekY1 = (curY * 25) + 8;
+                        cheekX2 = (curX * 25) + 6;
+                        cheekY2 = (curY * 25) + 8;
+                        break;
+                    }
                 }
-                case DOWN: {
-                    noseX = (curX * 25) + 13;
-                    noseY = (curY * 25) + 29;
-                    cheekX1 = noseX - 7;
-                    cheekY1 = (curY * 25) + 18;
-                    cheekX2 = noseX + 7;
-                    cheekY2 = (curY * 25) + 18;
-                    break;
-                }
-                case RIGHT: {
-                    noseX = (curX * 25) - 7;
-                    noseY = (curY * 25) + 13;  
-                    break;
-                }
-                case UP: {
-                    noseX = (curX * 25) + 13;
-                    noseY = (curY * 25) - 7;  
-                    cheekX1 = (curX * 25) + 20;
-                    cheekY1 = (curY * 25) + 8;
-                    cheekX2 = (curX * 25) + 6;
-                    cheekY2 = (curY * 25) + 8;
-                    break;
-                }
+                ofDrawCircle(noseX, noseY, 8);//nose
+                ofSetColor(255, 230, 0);
+                ofDrawCircle(cheekX1, cheekY1, 6);//cheek
+                ofDrawCircle(cheekX2, cheekY2, 6);//cheek
             }
-            ofDrawCircle(noseX, noseY, 8);//nose
-            ofSetColor(255, 230, 0);
-            ofDrawCircle(cheekX1, cheekY1, 6);//cheek
-            ofDrawCircle(cheekX2, cheekY2, 6);//cheek
+        }
+    } else {
+        for (int i = 0; i < body.size(); i++) {
+            int curX = this->body[i][0];
+            int curY = this->body[i][1];
+            ofSetColor(255, tint, tint); // changed color of body to yellow
+            ofDrawCircle((curX * 25) + 13, (curY * 25) + 13, 12);
+            ofSetColor(255, tint, tint); //inner circle
+            ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 8);
+            ofSetColor(255, tint, tint); // outer circle
+            ofDrawCircle((curX * 25) + 9, (curY * 25) + 11, 5);
+            ofSetColor(255, tint, tint); // changed color of head to yellow
+            ofDrawCircle((this->body[0][0] * 25) + 13, (this->body[0][1] * 25) + 13, 12); // head
+            if (i == 0) { // draw nose on the head
+                ofSetColor(255, tint, tint);
+                int noseX, noseY, cheekX1, cheekY1, cheekX2, cheekY2;
+                int cheekSize = 8;
+                switch(this->direction) {
+                    case LEFT: {
+                        noseX = (curX * 25) + 29;
+                        noseY = (curY * 25) + 13;
+                        break;
+                    }
+                    case DOWN: {
+                        noseX = (curX * 25) + 13;
+                        noseY = (curY * 25) + 29;
+                        cheekX1 = noseX - 7;
+                        cheekY1 = (curY * 25) + 18;
+                        cheekX2 = noseX + 7;
+                        cheekY2 = (curY * 25) + 18;
+                        break;
+                    }
+                    case RIGHT: {
+                        noseX = (curX * 25) - 7;
+                        noseY = (curY * 25) + 13;  
+                        break;
+                    }
+                    case UP: {
+                        noseX = (curX * 25) + 13;
+                        noseY = (curY * 25) - 7;  
+                        cheekX1 = (curX * 25) + 20;
+                        cheekY1 = (curY * 25) + 8;
+                        cheekX2 = (curX * 25) + 6;
+                        cheekY2 = (curY * 25) + 8;
+                        break;
+                    }
+                }
+                ofDrawCircle(noseX, noseY, 8);//nose
+                ofSetColor(255, tint, tint);
+                ofDrawCircle(cheekX1, cheekY1, 6);//cheek
+                ofDrawCircle(cheekX2, cheekY2, 6);//cheek
+            }
         }
     }
-
 }
 
 void Snake::changeDirection(Direction d) {
@@ -151,12 +204,12 @@ void Snake::grow() {
     this->body.push_back(newSegment);
 }
 
-bool Snake::godMode(bool change) {
+bool Snake::godMode(bool change) {// makes it so the crash checkers don't work when gogMode is active
     return isGod = change;
 }
 
 void Snake::undo(){
     if(this->body.size() > 2){
-        this->body.pop_back();
+        this->body.pop_back(); // removes end of snake
     }
 }

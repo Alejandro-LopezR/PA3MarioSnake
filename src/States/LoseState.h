@@ -3,7 +3,7 @@
 #include "State.h"
 #include "ofMain.h"
 
-class LoseState : public State {
+class LoseState : public State {// crates what you see when lose state is activated
 
 public:
     LoseState();

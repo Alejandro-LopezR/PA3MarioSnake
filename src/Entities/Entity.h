@@ -2,7 +2,7 @@
 
 #include<iostream>
 using namespace std;
-class Entity{
+class Entity{ //entity class which is inherited by StaticEntity
     public:
         int obstacleX;
         int obstacleY;
@@ -11,10 +11,10 @@ class Entity{
 
         Entity(): obstacleX(0), obstacleY(0), obstacleW(0),obstacleH(0){}
 
-        Entity(int obstacleX, int obstacleY, int obstacleW, int obstacleH) : obstacleX(obstacleX), obstacleY(obstacleY), obstacleW(obstacleW),obstacleH(obstacleH){}
+        Entity(int obstacleX, int obstacleY, int obstacleW, int obstacleH) : obstacleX(obstacleX), obstacleY(obstacleY), obstacleW(obstacleW),obstacleH(obstacleH){} //Entity constructor
         virtual ~Entity() {}
 		
-        virtual void drawEntity() = 0;
+        virtual void drawEntity() = 0; //entity method
 
 
         //getters
